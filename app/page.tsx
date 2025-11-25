@@ -85,7 +85,7 @@ export default function LeonNoelSearch() {
       {/* Search Section */}
       <div className={`flex flex-col items-center justify-center transition-all duration-500 ${results.length > 0 ? 'pt-12 pb-8' : 'min-h-[calc(100vh-80px)]'}`}>
         <h1 className="text-4xl md:text-6xl font-bold mb-8 text-center px-4">
-          Leon Noel Video Search
+          100Devs Resource Site
         </h1>
         
         <div className="w-full max-w-3xl px-4">
