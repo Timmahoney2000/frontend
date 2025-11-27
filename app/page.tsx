@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { Search, Clock, ExternalLink } from 'lucide-react';
 import Header from './components/Header';
+import Footer from './components/Footer';
 
 interface Timestamp {
   start: number;
@@ -22,49 +23,37 @@ export default function LeonNoelSearch() {
   const [results, setResults] = useState<Result[]>([]);
   const [isSearching, setIsSearching] = useState(false);
 
-  const handleSearch = async () => {
-    if (!query.trim()) return;
+ const handleSearch = async () => {
+  if (!query.trim()) return;
 
-    setIsSearching(true);
+  setIsSearching(true);
+  
+  try {
+    console.log('Searching for:', query);
     
-    try {
-      const response = await fetch('/api/search', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ query })
-      });
-      
-      const data = await response.json();
-      setResults(data.results);
-    } catch (error) {
-      console.error('Search error:', error);
-      setResults([
-        {
-          id: '1',
-          videoId: 'gQojMIhELvM',
-          title: '100Devs - Networking & Getting Hired',
-          thumbnail: 'https://img.youtube.com/vi/gQojMIhELvM/maxresdefault.jpg',
-          timestamps: [
-            { start: 320, text: 'How to network effectively at meetups' },
-            { start: 845, text: 'Cold emailing and LinkedIn strategies' },
-            { start: 1520, text: 'Building genuine relationships in tech' }
-          ]
-        },
-        {
-          id: '2',
-          videoId: 'o3IIobN4xR0',
-          title: '100Devs - Resume & Portfolio Review',
-          thumbnail: 'https://img.youtube.com/vi/o3IIobN4xR0/maxresdefault.jpg',
-          timestamps: [
-            { start: 450, text: 'Networking during job applications' },
-            { start: 1230, text: 'Following up with connections' }
-          ]
-        }
-      ]);
-    } finally {
-      setIsSearching(false);
+    const response = await fetch('http://localhost:8000/api/search', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ query })
+    });
+    
+    console.log('Response status:', response.status);
+    
+    if (!response.ok) {
+      throw new Error(`Backend error: ${response.status}`);
     }
-  };
+    
+    const data = await response.json();
+    console.log('Received results:', data);
+    setResults(data.results);
+  } catch (error) {
+    console.error('Search error:', error);
+    alert('Failed to search. Make sure backend is running on http://localhost:8000');
+    setResults([]);
+  } finally {
+    setIsSearching(false);
+  }
+};
 
   const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter') {
@@ -167,6 +156,7 @@ export default function LeonNoelSearch() {
           <p className="text-zinc-400">No results found. Try a different search term.</p>
         </div>
       )}
+      <Footer />
     </div>
   );
 }
