@@ -9,6 +9,8 @@ import Footer from './components/Footer';
 import BookmarksPanel from './components/BookmarksPanel';
 import { useBookmarks } from './hooks/useBookmarks';
 import { generateShareUrl, copyToClipboard, shareNative } from './utils/share';
+import Script from 'next/script';
+
 
 interface Timestamp {
   start: number;
