@@ -4,6 +4,16 @@ import "./globals.css";
 import type { AppProps } from "next/app";
 import React from "react";
 import Script from "next/script";
+import { GoogleAnalytics } from '@next/third-parties/google'
+
+export default function RootLayout({ children }) {
+  return (
+    <html lang="en">
+      <body>{children}</body>
+      <GoogleAnalytics gaId="G-PGLH40H48Y" />
+    </html>
+  )
+}
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
